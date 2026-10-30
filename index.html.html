@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Triangle Detectives: Grade 5 Explore</title>
+<style>
+:root{font-family:Arial,sans-serif;color:#182235;background:#f3f6fb}
+body{margin:0}.wrap{max-width:980px;margin:auto;padding:22px}
+header{background:#183b63;color:white;padding:22px;border-radius:16px}
+h1{margin:0 0 8px}.sub{opacity:.92}
+.panel{background:white;border-radius:14px;padding:18px;margin:16px 0;box-shadow:0 2px 12px #0000000d}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.shape{border:2px solid #d5deea;border-radius:12px;padding:12px;text-align:center}
+svg{width:100%;max-height:150px}
+button,select,input{font-size:1rem;padding:10px;border-radius:8px;border:1px solid #9aabc0}
+button{background:#1767a5;color:white;border:0;cursor:pointer;margin:4px}
+button:focus,select:focus,input:focus{outline:3px solid #f2c14e}
+.feedback{font-weight:bold;min-height:1.5em}
+label{display:block;margin:8px 0}
+.tag{display:inline-block;background:#e3f2fd;padding:4px 8px;border-radius:20px;font-size:.85rem}
+</style>
+</head>
+<body><div class="wrap">
+<header><h1>Triangle Detectives</h1><div class="sub">Grade 5 Mathematics • Explore phase • Set A: teacher-led interactive whiteboard</div></header>
+<section class="panel">
+<h2>Your challenge</h2>
+<p>Investigate how triangles are classified by their <b>side lengths</b>. Look closely at each shape. The triangles may be different sizes or turned in different directions, but their side-length properties determine their names.</p>
+<p><b>Class question:</b> How can we classify a triangle without relying on its colour, size or direction?</p>
+</section>
+<section class="panel">
+<h2>1. Observe the shapes</h2>
+<div class="grid">
+<div class="shape"><svg viewBox="0 0 180 130" role="img" aria-label="Equilateral triangle with three equal sides"><polygon points="90,12 20,118 160,118" fill="#cce7ff" stroke="#14558a" stroke-width="3"/><text x="90" y="127" text-anchor="middle" font-size="10">equal • equal • equal</text></svg><b>Triangle A</b><p>All three sides are the same length.</p></div>
+<div class="shape"><svg viewBox="0 0 180 130" role="img" aria-label="Isosceles triangle with two equal sides"><polygon points="90,12 30,118 150,118" fill="#d8f5dc" stroke="#23763a" stroke-width="3"/><text x="90" y="127" text-anchor="middle" font-size="10">two equal sides</text></svg><b>Triangle B</b><p>Two sides are equal; the third is different.</p></div>
+<div class="shape"><svg viewBox="0 0 180 130" role="img" aria-label="Scalene triangle with three unequal sides"><polygon points="38,20 20,118 160,118" fill="#ffe6c7" stroke="#99561a" stroke-width="3"/><text x="90" y="127" text-anchor="middle" font-size="10">all sides different</text></svg><b>Triangle C</b><p>All three sides have different lengths.</p></div>
+</div>
+<p class="tag">Teacher prompt: Invite learners to describe evidence, not just guess a name.</p>
+</section>
+<section class="panel">
+<h2>2. Make a prediction</h2>
+<p>Can a triangle still be a triangle if it is rotated or drawn larger?</p>
+<label><input type="radio" name="predict" value="yes"> Yes</label>
+<label><input type="radio" name="predict" value="no"> No</label>
+<button onclick="checkPrediction()">Check prediction</button>
+<div id="predFeedback" class="feedback" aria-live="polite"></div>
+</section>
+<section class="panel">
+<h2>3. Classify the triangle</h2>
+<p>A triangle has side lengths 5 cm, 5 cm and 8 cm. Which type is it?</p>
+<label for="classification">Choose an answer:</label>
+<select id="classification"><option value="">Choose…</option><option>Equilateral</option><option>Isosceles</option><option>Scalene</option></select>
+<button onclick="checkClass()">Check answer</button>
+<div id="classFeedback" class="feedback" aria-live="polite"></div>
+</section>
+<section class="panel">
+<h2>4. Create a class explanation</h2>
+<p>As a class, build a digital explanation. Ask learners to suggest the words for each blank, then have the teacher or learner representative enter the agreed class response on the board.</p>
+<div class="grid">
+<label>All three sides equal: <input id="equal3" placeholder="Triangle type"></label>
+<label>Exactly two equal sides: <input id="equal2" placeholder="Triangle type"></label>
+<label>All sides different: <input id="different" placeholder="Triangle type"></label>
+</div>
+<button onclick="showSummary()">Display class summary</button>
+<div id="summary" class="panel" aria-live="polite" hidden></div>
+<p><b>Exit question:</b> Explain why a triangle with sides 6 cm, 6 cm and 6 cm is equilateral.</p>
+</section>
+<footer><p>Designed for teacher projection. No learner device or home internet is required. Responses can be discussed orally; the teacher can enter the class's agreed ideas on the shared screen.</p></footer>
+</div>
+<script>
+function checkPrediction(){
+ const v=document.querySelector('input[name="predict"]:checked');
+ document.getElementById('predFeedback').textContent=!v?'Choose an answer first.':v.value==='yes'?'Correct. Turning or resizing a triangle does not change its side-length relationships.':'Not quite. Rotation and size do not change the triangle’s defining properties.';
+}
+function checkClass(){
+ const v=document.getElementById('classification').value;
+ document.getElementById('classFeedback').textContent=!v?'Choose an answer first.':v==='Isosceles'?'Correct. Two sides are equal and the third side is different.':'Try again: compare the three side lengths. Two are equal, but all three are not equal.';
+}
+function showSummary(){
+ const a=document.getElementById('equal3').value.trim()||'equilateral';
+ const b=document.getElementById('equal2').value.trim()||'isosceles';
+ const c=document.getElementById('different').value.trim()||'scalene';
+ const s=document.getElementById('summary'); s.hidden=false;
+ s.innerHTML='<h3>Our class explanation</h3><ul><li>All three sides equal: <b>'+escapeHtml(a)+'</b></li><li>Exactly two equal sides: <b>'+escapeHtml(b)+'</b></li><li>All sides different: <b>'+escapeHtml(c)+'</b></li></ul>';
+}
+function escapeHtml(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+</script>
+</body></html>
